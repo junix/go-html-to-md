@@ -1,2 +1,9 @@
-html-to-markdown.so
-html-to-markdown.h
+html-to-markdown
+html-to-markdown.exe
+*.so
+*.h
+*.o
+*.test
+*.out
+.DS_Store
+vendor/
