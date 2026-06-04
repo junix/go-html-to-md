@@ -1,5 +1,8 @@
 html-to-markdown
 html-to-markdown.exe
+html-to-markdown.osx.*
+html-to-markdown.linux.*
+html-to-markdown.ubuntu.*
 *.so
 *.h
 *.o
