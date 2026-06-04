@@ -17,12 +17,13 @@ import (
 
 // ConvertHTMLToMarkdown converts an HTML string to Markdown format
 // This function is exported for use with CGO, allowing it to be called from other languages
+//
 //export ConvertHTMLToMarkdown
 func ConvertHTMLToMarkdown(html *C.char) *C.char {
 	// Create a new converter with default settings
 	// Parameters: "" = no base URL, true = enable smart symbol conversion, nil = no additional options
 	converter := md.NewConverter("", true, nil)
-	
+
 	// Use GitHub Flavored Markdown plugins for better compatibility
 	converter.Use(plugin.GitHubFlavored())
 
@@ -33,19 +34,20 @@ func ConvertHTMLToMarkdown(html *C.char) *C.char {
 		// log.Fatal(err)
 		return C.CString("Error: Failed to convert HTML to Markdown")
 	}
-	
+
 	// Return the result as a C string for CGO compatibility
 	return C.CString(markdown)
 }
 
 // ConvertHTMLFileToMarkdown converts HTML content from a file to Markdown and returns it as a C string
+//
 //export ConvertHTMLFileToMarkdown
 func ConvertHTMLFileToMarkdown(filepath *C.char) *C.char {
 	content, err := os.ReadFile(C.GoString(filepath))
 	if err != nil {
 		return C.CString("Error: Failed to read file")
 	}
-	
+
 	return ConvertHTMLToMarkdown(C.CString(string(content)))
 }
 
@@ -94,12 +96,12 @@ func main() {
 		// Simple CLI mode
 		inputFile := os.Args[1]
 		outputFile := ""
-		
+
 		// Check if output file is specified
 		if len(os.Args) > 2 {
 			outputFile = os.Args[2]
 		}
-		
+
 		err := convertHTMLFileToMarkdown(inputFile, outputFile)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
@@ -113,7 +115,7 @@ func main() {
 		// Process HTML from stdin
 		reader := bufio.NewReader(os.Stdin)
 		var html strings.Builder
-		
+
 		// Read all stdin content
 		for {
 			line, err := reader.ReadString('\n')
@@ -126,7 +128,7 @@ func main() {
 				os.Exit(1)
 			}
 		}
-		
+
 		// Convert and print to stdout
 		markdown, err := convertHTMLToMarkdownString(html.String())
 		if err != nil {

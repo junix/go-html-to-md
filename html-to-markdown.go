@@ -17,12 +17,13 @@ import (
 
 // ConvertHTMLToMarkdown converts an HTML string to Markdown format
 // This function is exported for use with CGO, allowing it to be called from other languages
+//
 //export ConvertHTMLToMarkdown
 func ConvertHTMLToMarkdown(html *C.char) *C.char {
 	// Create a new converter with default settings
 	// Parameters: "" = no base URL, true = enable smart symbol conversion, nil = no additional options
 	converter := md.NewConverter("", true, nil)
-	
+
 	// Use GitHub Flavored Markdown plugins for better compatibility
 	converter.Use(plugin.GitHubFlavored())
 
@@ -32,7 +33,7 @@ func ConvertHTMLToMarkdown(html *C.char) *C.char {
 		// Error handling is commented out to prevent crash in CGO context
 		// log.Fatal(err)
 	}
-	
+
 	// Return the result as a C string for CGO compatibility
 	return C.CString(markdown)
 }

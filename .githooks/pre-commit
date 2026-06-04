@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+gofmt -w .
+
+if ! git diff --quiet; then
+  echo "gofmt changed files. Please review, git add, and commit again."
+  exit 1
+fi
