@@ -51,6 +51,12 @@ func convertHTMLToMarkdownString(html string) (string, error) {
 
 // main function serves as the entry point for CLI usage
 func main() {
+	// Print version and exit
+	if len(os.Args) > 1 && (os.Args[1] == "-V" || os.Args[1] == "--version") {
+		fmt.Println("html-to-markdown 0.1.0")
+		return
+	}
+
 	// Display help information if requested
 	if len(os.Args) > 1 && (os.Args[1] == "-h" || os.Args[1] == "--help") {
 		fmt.Println("HTML to Markdown Converter")
