@@ -7,11 +7,12 @@ default: build
 
 # 构建（Release 模式）
 build:
-    go build -o html-to-markdown html-to-markdown.go
+    go build -o html-to-markdown html-to-markdown.go convert.go
 
 # 运行测试
 test:
-    echo "html-to-markdown" | go run html-to-markdown.go | head -1
+    go test convert.go convert_test.go
+    echo "html-to-markdown" | go run html-to-markdown.go convert.go | head -1
 
 # 安装到 ~/sync/bin_<arch>/
 install: build

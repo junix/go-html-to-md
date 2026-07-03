@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 
 # Build the shared library
 echo "Building shared library..."
-go build -buildmode=c-shared -o libhtmltomd.so html-to-markdown-lib.go
+go build -buildmode=c-shared -o libhtmltomd.so html-to-markdown-lib.go convert.go
 
 # Check if the build was successful
 if [ $? -eq 0 ]; then

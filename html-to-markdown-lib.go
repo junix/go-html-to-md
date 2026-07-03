@@ -9,10 +9,6 @@ import (
 	"io"
 	"os"
 	"strings"
-
-	// Third-party library for HTML to Markdown conversion
-	md "github.com/tomkosm/html-to-markdown"
-	"github.com/tomkosm/html-to-markdown/plugin"
 )
 
 // ConvertHTMLToMarkdown converts an HTML string to Markdown format
@@ -20,12 +16,8 @@ import (
 //
 //export ConvertHTMLToMarkdown
 func ConvertHTMLToMarkdown(html *C.char) *C.char {
-	// Create a new converter with default settings
-	// Parameters: "" = no base URL, true = enable smart symbol conversion, nil = no additional options
-	converter := md.NewConverter("", true, nil)
-
-	// Use GitHub Flavored Markdown plugins for better compatibility
-	converter.Use(plugin.GitHubFlavored())
+	// Build a converter configured with GitHub Flavored Markdown (shared helper)
+	converter := newMarkdownConverter()
 
 	// Convert the HTML string to Markdown
 	markdown, err := converter.ConvertString(C.GoString(html))
@@ -49,17 +41,6 @@ func ConvertHTMLFileToMarkdown(filepath *C.char) *C.char {
 	}
 
 	return ConvertHTMLToMarkdown(C.CString(string(content)))
-}
-
-// convertHTMLToMarkdownString is a Go-friendly wrapper for HTML to Markdown conversion
-// It provides the same functionality as ConvertHTMLToMarkdown but with native Go types
-func convertHTMLToMarkdownString(html string) (string, error) {
-	// Create converter with same settings as the exported function
-	converter := md.NewConverter("", true, nil)
-	converter.Use(plugin.GitHubFlavored())
-
-	// Return both the converted markdown and any error that occurred
-	return converter.ConvertString(html)
 }
 
 // convertHTMLFileToMarkdown is a Go helper function to convert HTML content from a file
