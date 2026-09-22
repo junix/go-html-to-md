@@ -18,5 +18,5 @@ test:
 # 安装到 ~/sync/<os>-<arch>-bin/
 install: build
     mkdir -p "{{install_bin}}"
-    cp html-to-markdown "{{install_bin}}/html-to-markdown"
+    @set -eu; dest="{{install_bin}}/html-to-markdown"; mkdir -p "$(dirname "$dest")"; tmp="$(mktemp "{{ install_bin }}/.html-to-markdown.XXXXXX")"; trap 'rm -f "$tmp"' EXIT; cp "html-to-markdown" "$tmp"; chmod 755 "$tmp"; if [ "$(uname -s)" = "Darwin" ]; then xattr -c "$tmp" 2>/dev/null || true; codesign --force --sign - "$tmp"; fi; mv -f "$tmp" "$dest"
     echo "Installed html-to-markdown to {{install_bin}}"
