@@ -6,9 +6,12 @@ install_bin := env("SYNC_BIN_DIR", home_directory() / "sync" / (os_suffix + "-" 
 
 default: build
 
+# 构建印章：git 短 sha，工作树脏时追加 .dirty
+stamp := `git rev-parse --short HEAD` + `(git diff --quiet && git diff --cached --quiet) >/dev/null 2>&1 || printf .dirty`
+
 # 构建（Release 模式）
 build:
-    go build -o html-to-markdown html-to-markdown.go convert.go
+    go build -ldflags "-X main.version=0.1.0+g{{stamp}}" -o html-to-markdown html-to-markdown.go convert.go
 
 # 运行测试
 test:
